@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Sales Details";
+}
+
+<div >
+    <h4>SalesDetail</h4>
+    <hr />
+    <table class="table">
+        
+        <tr>
+        <td>
+            @Html.DisplayName("Sales Person Number")
+        </td>
+
+        <td>
+            @ViewData["number"].ToString()
+
+        </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Sales Person Name")
+            </td>
+
+            <td>
+                @ViewData["name"].ToString()
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Month")
+            </td>
+
+            <td>
+
+               @ViewData["month"].ToString()
+            </td>
+
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Year")
+            </td>
+
+            <td>
+                @ViewData["year"].ToString()
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Registeration Date")
+            </td>
+
+            <td>
+                @ViewData["regDate"].ToString()
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Southern Region")
+            </td>
+
+            <td>
+                @ViewData["south"].ToString()
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Costal Region")
+            </td>
+
+            <td>
+                @ViewData["costal"].ToString()
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Northern Region")
+            </td>
+
+            <td>
+                @ViewData["north"].ToString()
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Eastern Region")
+            </td>
+
+            <td>
+                @ViewData["east"].ToString()
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Lebanon")
+            </td>
+
+            <td>
+                @ViewData["leban"].ToString()
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Monthly Commission")
+            </td>
+
+            <td>
+                @ViewData["comm"].ToString()
+            </td>
+        </tr>
+  
+
+</table>
+
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

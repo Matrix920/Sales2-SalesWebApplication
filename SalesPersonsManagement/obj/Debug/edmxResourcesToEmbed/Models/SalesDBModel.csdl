@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SalesDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Comission">
+    <Key>
+      <PropertyRef Name="ComissionID" />
+    </Key>
+    <Property Name="ComissionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PersonID" Type="Int32" Nullable="false" />
+    <Property Name="Month" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Comission1" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+    <NavigationProperty Name="SalesPerson" Relationship="Self.FK_Comissions_Persons" FromRole="Comissions" ToRole="SalesPersons" />
+  </EntityType>
+  <EntityType Name="Region">
+    <Key>
+      <PropertyRef Name="RegionID" />
+    </Key>
+    <Property Name="RegionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RegionName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_Regions" FromRole="Regions" ToRole="Sales" />
+    <NavigationProperty Name="SalesPersons" Relationship="SalesDBModel.FK_SalesPersons_Regions" FromRole="Region" ToRole="SalesPerson" />
+  </EntityType>
+  <EntityType Name="Sale">
+    <Key>
+      <PropertyRef Name="SaleID" />
+    </Key>
+    <Property Name="SaleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RegionID" Type="Int32" Nullable="false" />
+    <Property Name="PersonID" Type="Int32" Nullable="false" />
+    <Property Name="Sells" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+    <Property Name="Month" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Region" Relationship="Self.FK_Sales_Regions" FromRole="Sales" ToRole="Regions" />
+    <NavigationProperty Name="SalesPerson" Relationship="Self.FK_Sales_SalesPersons" FromRole="Sales" ToRole="SalesPersons" />
+  </EntityType>
+  <EntityType Name="SalesPerson">
+    <Key>
+      <PropertyRef Name="PersonID" />
+    </Key>
+    <Property Name="PersonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Comissions" Relationship="Self.FK_Comissions_Persons" FromRole="SalesPersons" ToRole="Comissions" />
+    <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_SalesPersons" FromRole="SalesPersons" ToRole="Sales" />
+    <Property Name="RegionID" Type="Int32" Nullable="false" />
+    <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="Region" Relationship="SalesDBModel.FK_SalesPersons_Regions" FromRole="SalesPerson" ToRole="Region" />
+  </EntityType>
+  <Association Name="FK_Comissions_Persons">
+    <End Role="SalesPersons" Type="Self.SalesPerson" Multiplicity="1" />
+    <End Role="Comissions" Type="Self.Comission" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SalesPersons">
+        <PropertyRef Name="PersonID" />
+      </Principal>
+      <Dependent Role="Comissions">
+        <PropertyRef Name="PersonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sales_Regions">
+    <End Role="Regions" Type="Self.Region" Multiplicity="1" />
+    <End Role="Sales" Type="Self.Sale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Regions">
+        <PropertyRef Name="RegionID" />
+      </Principal>
+      <Dependent Role="Sales">
+        <PropertyRef Name="RegionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sales_SalesPersons">
+    <End Role="SalesPersons" Type="Self.SalesPerson" Multiplicity="1" />
+    <End Role="Sales" Type="Self.Sale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SalesPersons">
+        <PropertyRef Name="PersonID" />
+      </Principal>
+      <Dependent Role="Sales">
+        <PropertyRef Name="PersonID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SalesDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="Self.Admin" />
+    <EntitySet Name="Comissions" EntityType="Self.Comission" />
+    <EntitySet Name="Regions" EntityType="Self.Region" />
+    <EntitySet Name="Sales" EntityType="Self.Sale" />
+    <EntitySet Name="SalesPersons" EntityType="Self.SalesPerson" />
+    <AssociationSet Name="FK_Comissions_Persons" Association="Self.FK_Comissions_Persons">
+      <End Role="SalesPersons" EntitySet="SalesPersons" />
+      <End Role="Comissions" EntitySet="Comissions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sales_Regions" Association="Self.FK_Sales_Regions">
+      <End Role="Regions" EntitySet="Regions" />
+      <End Role="Sales" EntitySet="Sales" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sales_SalesPersons" Association="Self.FK_Sales_SalesPersons">
+      <End Role="SalesPersons" EntitySet="SalesPersons" />
+      <End Role="Sales" EntitySet="Sales" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SalesPersons_Regions" Association="SalesDBModel.FK_SalesPersons_Regions">
+      <End Role="Region" EntitySet="Regions" />
+      <End Role="SalesPerson" EntitySet="SalesPersons" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK_SalesPersons_Regions">
+    <End Type="SalesDBModel.Region" Role="Region" Multiplicity="1" />
+    <End Type="SalesDBModel.SalesPerson" Role="SalesPerson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="RegionID" />
+      </Principal>
+      <Dependent Role="SalesPerson">
+        <PropertyRef Name="RegionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

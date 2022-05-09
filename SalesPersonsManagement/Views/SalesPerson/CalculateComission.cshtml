@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Sales Information";
+}
+
+@using (Html.BeginForm("CalculateComission", "SalesPerson", FormMethod.Post, new { @class = "form-class" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>SalesPerson</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("south", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("txtSouth", "", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("txtSouth", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("north", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("txtNorth", "", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("txtNorth", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("costal", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("txtCostal", "", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("txtCostal", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("east", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("txtEast", "", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("txtEast", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("lebanon", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("txtLeban", "", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("txtLeban", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Month", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("txtMonth", "", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("txtLeban", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Year", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("txtYear", "", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("txtLeban", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+        <b>
+            the result is
+          @ViewData["error"]
+        </b>
+    </div>
+                }
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,435 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SalesDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comissions">
+          <Key>
+            <PropertyRef Name="ComissionID" />
+          </Key>
+          <Property Name="ComissionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Comm" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Regions">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegionName" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sales">
+          <Key>
+            <PropertyRef Name="SaleID" />
+          </Key>
+          <Property Name="SaleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="PersonID" Type="int" Nullable="false" />
+          <Property Name="ComissionID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SalesDetails">
+          <Key>
+            <PropertyRef Name="SaleDetailID" />
+          </Key>
+          <Property Name="SaleDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SaleID" Type="int" Nullable="false" />
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="Sell" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SalesPersons">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="text" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="Picture" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegisterationDate" Type="date" />
+        </EntityType>
+        <Association Name="FK_Comissions_Persons">
+          <End Role="SalesPersons" Type="Self.SalesPersons" Multiplicity="1" />
+          <End Role="Comissions" Type="Self.Comissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesPersons">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Comissions">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sales_Comissions">
+          <End Role="Comissions" Type="Self.Comissions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comissions">
+              <PropertyRef Name="ComissionID" />
+            </Principal>
+            <Dependent Role="Sales">
+              <PropertyRef Name="ComissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sales_Persons">
+          <End Role="SalesPersons" Type="Self.SalesPersons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesPersons">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Sales">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalesDetails_Regions">
+          <End Role="Regions" Type="Self.Regions" Multiplicity="1" />
+          <End Role="SalesDetails" Type="Self.SalesDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="SalesDetails">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalesDetails_Sales">
+          <End Role="Sales" Type="Self.Sales" Multiplicity="1" />
+          <End Role="SalesDetails" Type="Self.SalesDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sales">
+              <PropertyRef Name="SaleID" />
+            </Principal>
+            <Dependent Role="SalesDetails">
+              <PropertyRef Name="SaleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalesPersons_Regions">
+          <End Role="Regions" Type="Self.Regions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SalesPersons" Type="Self.SalesPersons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="SalesPersons">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SalesDBModelStoreContainer">
+          <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comissions" EntityType="Self.Comissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Regions" EntityType="Self.Regions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sales" EntityType="Self.Sales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalesDetails" EntityType="Self.SalesDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalesPersons" EntityType="Self.SalesPersons" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Comissions_Persons" Association="Self.FK_Comissions_Persons">
+            <End Role="SalesPersons" EntitySet="SalesPersons" />
+            <End Role="Comissions" EntitySet="Comissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sales_Comissions" Association="Self.FK_Sales_Comissions">
+            <End Role="Comissions" EntitySet="Comissions" />
+            <End Role="Sales" EntitySet="Sales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sales_Persons" Association="Self.FK_Sales_Persons">
+            <End Role="SalesPersons" EntitySet="SalesPersons" />
+            <End Role="Sales" EntitySet="Sales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalesDetails_Regions" Association="Self.FK_SalesDetails_Regions">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="SalesDetails" EntitySet="SalesDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalesDetails_Sales" Association="Self.FK_SalesDetails_Sales">
+            <End Role="Sales" EntitySet="Sales" />
+            <End Role="SalesDetails" EntitySet="SalesDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalesPersons_Regions" Association="Self.FK_SalesPersons_Regions">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="SalesPersons" EntitySet="SalesPersons" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SalesDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comission">
+          <Key>
+            <PropertyRef Name="ComissionID" />
+          </Key>
+          <Property Name="ComissionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="SalesPerson" Relationship="Self.FK_Comissions_Persons" FromRole="Comissions" ToRole="SalesPersons" />
+          <Property Name="Comm" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="Sales" Relationship="SalesDBModel.FK_Sales_Comissions" FromRole="Comission" ToRole="Sale" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegionName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="SalesDetails" Relationship="Self.FK_SalesDetails_Regions" FromRole="Regions" ToRole="SalesDetails" />
+          <NavigationProperty Name="SalesPersons" Relationship="Self.FK_SalesPersons_Regions" FromRole="Regions" ToRole="SalesPersons" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="SaleID" />
+          </Key>
+          <Property Name="SaleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PersonID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SalesPerson" Relationship="Self.FK_Sales_Persons" FromRole="Sales" ToRole="SalesPersons" />
+          <NavigationProperty Name="SalesDetails" Relationship="Self.FK_SalesDetails_Sales" FromRole="Sales" ToRole="SalesDetails" />
+          <Property Name="ComissionID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comission" Relationship="SalesDBModel.FK_Sales_Comissions" FromRole="Sale" ToRole="Comission" />
+        </EntityType>
+        <EntityType Name="SalesDetail">
+          <Key>
+            <PropertyRef Name="SaleDetailID" />
+          </Key>
+          <Property Name="SaleDetailID" Type="Int32" Nullable="false" />
+          <Property Name="SaleID" Type="Int32" Nullable="false" />
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="Sell" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Region" Relationship="Self.FK_SalesDetails_Regions" FromRole="SalesDetails" ToRole="Regions" />
+          <NavigationProperty Name="Sale" Relationship="Self.FK_SalesDetails_Sales" FromRole="SalesDetails" ToRole="Sales" />
+        </EntityType>
+        <EntityType Name="SalesPerson">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="Picture" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Comissions" Relationship="Self.FK_Comissions_Persons" FromRole="SalesPersons" ToRole="Comissions" />
+          <NavigationProperty Name="Region" Relationship="Self.FK_SalesPersons_Regions" FromRole="SalesPersons" ToRole="Regions" />
+          <NavigationProperty Name="Sales" Relationship="Self.FK_Sales_Persons" FromRole="SalesPersons" ToRole="Sales" />
+          <Property Name="RegisterationDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <Association Name="FK_Comissions_Persons">
+          <End Role="SalesPersons" Type="Self.SalesPerson" Multiplicity="1" />
+          <End Role="Comissions" Type="Self.Comission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesPersons">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Comissions">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalesDetails_Regions">
+          <End Role="Regions" Type="Self.Region" Multiplicity="1" />
+          <End Role="SalesDetails" Type="Self.SalesDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="SalesDetails">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalesPersons_Regions">
+          <End Role="Regions" Type="Self.Region" Multiplicity="1" />
+          <End Role="SalesPersons" Type="Self.SalesPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="SalesPersons">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sales_Persons">
+          <End Role="SalesPersons" Type="Self.SalesPerson" Multiplicity="1" />
+          <End Role="Sales" Type="Self.Sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesPersons">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Sales">
+              <PropertyRef Name="PersonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalesDetails_Sales">
+          <End Role="Sales" Type="Self.Sale" Multiplicity="1" />
+          <End Role="SalesDetails" Type="Self.SalesDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sales">
+              <PropertyRef Name="SaleID" />
+            </Principal>
+            <Dependent Role="SalesDetails">
+              <PropertyRef Name="SaleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SalesDBEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <EntitySet Name="Comissions" EntityType="Self.Comission" />
+          <EntitySet Name="Regions" EntityType="Self.Region" />
+          <EntitySet Name="Sales" EntityType="Self.Sale" />
+          <EntitySet Name="SalesDetails" EntityType="Self.SalesDetail" />
+          <EntitySet Name="SalesPersons" EntityType="Self.SalesPerson" />
+          <AssociationSet Name="FK_Comissions_Persons" Association="Self.FK_Comissions_Persons">
+            <End Role="SalesPersons" EntitySet="SalesPersons" />
+            <End Role="Comissions" EntitySet="Comissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalesDetails_Regions" Association="Self.FK_SalesDetails_Regions">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="SalesDetails" EntitySet="SalesDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalesPersons_Regions" Association="Self.FK_SalesPersons_Regions">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="SalesPersons" EntitySet="SalesPersons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sales_Persons" Association="Self.FK_Sales_Persons">
+            <End Role="SalesPersons" EntitySet="SalesPersons" />
+            <End Role="Sales" EntitySet="Sales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalesDetails_Sales" Association="Self.FK_SalesDetails_Sales">
+            <End Role="Sales" EntitySet="Sales" />
+            <End Role="SalesDetails" EntitySet="SalesDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sales_Comissions" Association="SalesDBModel.FK_Sales_Comissions">
+            <End Role="Comission" EntitySet="Comissions" />
+            <End Role="Sale" EntitySet="Sales" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Sales_Comissions">
+          <End Type="SalesDBModel.Comission" Role="Comission" Multiplicity="1" />
+          <End Type="SalesDBModel.Sale" Role="Sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comission">
+              <PropertyRef Name="ComissionID" />
+            </Principal>
+            <Dependent Role="Sale">
+              <PropertyRef Name="ComissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SalesDBModelStoreContainer" CdmEntityContainer="SalesDBEntities2">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="SalesDBModel.Admin">
+              <MappingFragment StoreEntitySet="Admins">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comissions">
+            <EntityTypeMapping TypeName="SalesDBModel.Comission">
+              <MappingFragment StoreEntitySet="Comissions">
+                <ScalarProperty Name="Comm" ColumnName="Comm" />
+                <ScalarProperty Name="ComissionID" ColumnName="ComissionID" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions">
+            <EntityTypeMapping TypeName="SalesDBModel.Region">
+              <MappingFragment StoreEntitySet="Regions">
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sales">
+            <EntityTypeMapping TypeName="SalesDBModel.Sale">
+              <MappingFragment StoreEntitySet="Sales">
+                <ScalarProperty Name="ComissionID" ColumnName="ComissionID" />
+                <ScalarProperty Name="SaleID" ColumnName="SaleID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalesDetails">
+            <EntityTypeMapping TypeName="SalesDBModel.SalesDetail">
+              <MappingFragment StoreEntitySet="SalesDetails">
+                <ScalarProperty Name="SaleDetailID" ColumnName="SaleDetailID" />
+                <ScalarProperty Name="SaleID" ColumnName="SaleID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="Sell" ColumnName="Sell" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalesPersons">
+            <EntityTypeMapping TypeName="SalesDBModel.SalesPerson">
+              <MappingFragment StoreEntitySet="SalesPersons">
+                <ScalarProperty Name="RegisterationDate" ColumnName="RegisterationDate" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Sales_Persons.Models.Comission>
+@{
+    ViewBag.Title = "Sales Person Comissions";
+}
+<form method="post" action="Search">
+    
+
+
+    Month:<input type="text" name="txtMonth" /><br /><br />
+    Year:<input type="text" name="txtYear" /><br /><br />
+    <input name="txtID" type="hidden" value="@Model.FirstOrDefault().PersonID" />
+    <input type="submit" value="search" />
+
+
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalesPerson.username)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalesPerson.username)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "CommDetails", new { id = item.ComissionID })
+                </td>
+            </tr>
+        }
+
+    </table>
+</form>
